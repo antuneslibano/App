@@ -12,12 +12,11 @@ export function AddQuestModal({ onClose }: { onClose: () => void }) {
   const [description, setDescription] = useState('');
   const [difficulty, setDifficulty] = useState<Rank>('E');
   const [stat, setStat] = useState<StatKey | ''>('');
-  const [isDaily, setIsDaily] = useState(false);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!title.trim()) return;
-    addQuest({ title, description, difficulty, stat: stat || undefined, isDaily });
+    addQuest({ title, description, difficulty, stat: stat || undefined });
     onClose();
   }
 
@@ -77,11 +76,6 @@ export function AddQuestModal({ onClose }: { onClose: () => void }) {
             </select>
           </div>
         </div>
-
-        <label className="flex items-center gap-2 mb-5 text-sm text-blue-100/80">
-          <input type="checkbox" checked={isDaily} onChange={(e) => setIsDaily(e.target.checked)} />
-          Missão diária (repete todo dia)
-        </label>
 
         <button
           type="submit"

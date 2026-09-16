@@ -1,4 +1,4 @@
-import type { Rank } from '../types';
+import type { Period, Rank } from '../types';
 
 export function xpForLevel(level: number): number {
   return Math.round(100 * Math.pow(level, 1.35));
@@ -38,4 +38,26 @@ export const DIFFICULTY_PENALTY: Record<Rank, number> = {
   B: 28,
   A: 40,
   S: 60,
+};
+
+export const PERIOD_MULTIPLIER: Record<Period, number> = {
+  daily: 1,
+  weekly: 1.6,
+  monthly: 2.4,
+  custom: 1,
+};
+
+export function questXp(difficulty: Rank, period: Period): number {
+  return Math.round(DIFFICULTY_XP[difficulty] * PERIOD_MULTIPLIER[period]);
+}
+
+export function questPenalty(difficulty: Rank, period: Period): number {
+  return Math.round(DIFFICULTY_PENALTY[difficulty] * PERIOD_MULTIPLIER[period]);
+}
+
+export const PERIOD_LABELS: Record<Period, string> = {
+  daily: 'Diária',
+  weekly: 'Semanal',
+  monthly: 'Mensal',
+  custom: 'Missão',
 };

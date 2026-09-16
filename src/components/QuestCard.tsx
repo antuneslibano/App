@@ -1,14 +1,15 @@
-import { Check, Flame, Trash2 } from 'lucide-react';
+import { Check, Trash2 } from 'lucide-react';
 import type { Quest } from '../types';
 import { STAT_LABELS } from '../types';
-import { DIFFICULTY_XP, RANK_COLORS } from '../lib/leveling';
+import { PERIOD_LABELS, RANK_COLORS, questXp } from '../lib/leveling';
 import { useGameStore } from '../store/useGameStore';
 
 export function QuestCard({ quest }: { quest: Quest }) {
   const toggleQuest = useGameStore((s) => s.toggleQuest);
   const deleteQuest = useGameStore((s) => s.deleteQuest);
-  const isDone = quest.isDaily ? quest.completedToday : quest.completed;
+  const isDone = quest.period === 'custom' ? quest.completed : quest.completedInPeriod;
   const color = RANK_COLORS[quest.difficulty];
+  const xp = questXp(quest.difficulty, quest.period);
 
   return (
     <div
@@ -37,9 +38,9 @@ export function QuestCard({ quest }: { quest: Quest }) {
           <h3 className={`font-medium text-white ${isDone ? 'line-through decoration-blue-400/60' : ''}`}>
             {quest.title}
           </h3>
-          {quest.isDaily && (
+          {quest.period !== 'custom' && (
             <span className="text-[10px] uppercase tracking-wide text-blue-300/70 border border-blue-400/20 rounded px-1.5 py-0.5">
-              Diária
+              {PERIOD_LABELS[quest.period]}
             </span>
           )}
           {quest.stat && (
@@ -50,22 +51,19 @@ export function QuestCard({ quest }: { quest: Quest }) {
         </div>
         {quest.description && <p className="text-sm text-blue-100/60 mt-1">{quest.description}</p>}
         <div className="flex items-center gap-3 mt-2 text-xs text-blue-200/60">
-          <span>+{DIFFICULTY_XP[quest.difficulty]} XP</span>
-          {quest.isDaily && quest.streak > 0 && (
-            <span className="flex items-center gap-1 text-amber-300/80">
-              <Flame size={12} /> {quest.streak} dia(s)
-            </span>
-          )}
+          <span>+{xp} XP</span>
         </div>
       </div>
 
-      <button
-        onClick={() => deleteQuest(quest.id)}
-        className="text-blue-300/30 hover:text-red-400 transition p-1"
-        title="Remover missão"
-      >
-        <Trash2 size={16} />
-      </button>
+      {quest.period === 'custom' && (
+        <button
+          onClick={() => deleteQuest(quest.id)}
+          className="text-blue-300/30 hover:text-red-400 transition p-1"
+          title="Remover missão"
+        >
+          <Trash2 size={16} />
+        </button>
+      )}
     </div>
   );
 }

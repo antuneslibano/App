@@ -17,19 +17,19 @@ const TABS: { id: Tab; label: string; icon: typeof UserRound }[] = [
 ];
 
 function App() {
-  const checkDailyReset = useGameStore((s) => s.checkDailyReset);
+  const checkResets = useGameStore((s) => s.checkResets);
   const [tab, setTab] = useState<Tab>('status');
 
   useEffect(() => {
-    checkDailyReset();
-    const onFocus = () => checkDailyReset();
+    checkResets();
+    const onFocus = () => checkResets();
     window.addEventListener('focus', onFocus);
-    const interval = setInterval(checkDailyReset, 60_000);
+    const interval = setInterval(checkResets, 60_000);
     return () => {
       window.removeEventListener('focus', onFocus);
       clearInterval(interval);
     };
-  }, [checkDailyReset]);
+  }, [checkResets]);
 
   return (
     <div className="min-h-[100dvh] flex flex-col">

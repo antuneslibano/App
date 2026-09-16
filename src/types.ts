@@ -18,18 +18,26 @@ export const STAT_LABELS: Record<StatKey, string> = {
   agi: 'Agilidade',
 };
 
+export type Period = 'daily' | 'weekly' | 'monthly' | 'custom';
+
 export interface Quest {
   id: string;
   title: string;
   description?: string;
   difficulty: Rank;
   stat?: StatKey;
-  isDaily: boolean;
+  period: Period;
   createdAt: string;
+  /** For 'custom' quests: whether it's done. */
   completed: boolean;
-  completedToday: boolean;
-  lastCompletedDate?: string;
-  streak: number;
+  /** For 'daily' | 'weekly' | 'monthly' quests: whether it's done in the current cycle. */
+  completedInPeriod: boolean;
+}
+
+export interface Streaks {
+  daily: number;
+  weekly: number;
+  monthly: number;
 }
 
 export interface Character {
