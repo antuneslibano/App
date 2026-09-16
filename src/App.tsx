@@ -4,6 +4,7 @@ import { useGameStore } from './store/useGameStore';
 import { StatusWindow } from './components/StatusWindow';
 import { QuestBoard } from './components/QuestBoard';
 import { LogFeed } from './components/LogFeed';
+import { NotificationSettings } from './components/NotificationSettings';
 import { LevelUpOverlay } from './components/LevelUpOverlay';
 import { ToastStack } from './components/ToastStack';
 import { InstallPrompt } from './components/InstallPrompt';
@@ -41,7 +42,12 @@ function App() {
       <main className="flex-1 overflow-y-auto px-4 pb-6 max-w-md w-full mx-auto">
         {tab === 'status' && <StatusWindow />}
         {tab === 'missoes' && <QuestBoard />}
-        {tab === 'historico' && <LogFeed />}
+        {tab === 'historico' && (
+          <div className="space-y-4">
+            <NotificationSettings />
+            <LogFeed />
+          </div>
+        )}
       </main>
 
       <nav

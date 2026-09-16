@@ -10,6 +10,7 @@ Um app de gamificação de vida real inspirado no "Sistema" de Solo Leveling. Ca
 - **Level up**: animação de tela cheia ao subir de nível, com pontos de atributo para distribuir.
 - **Zona de penalidade**: opcionalmente perde XP ao deixar uma missão do ciclo (diária/semanal/mensal) incompleta.
 - **Histórico**: feed de eventos (missões concluídas, level ups, penalidades, novos ciclos).
+- **Notificações push**: lembrete diário (às 20h BRT) pra não esquecer as missões, mesmo com o app fechado — ativado na aba Histórico. Enviado por um workflow agendado do GitHub Actions (Web Push com VAPID), sem backend próprio. Veja `.github/workflows/notify.yml` e `scripts/send-notification.mjs`.
 - Progresso salvo automaticamente no navegador (localStorage) — sem necessidade de backend ou login.
 
 ## Rodando localmente

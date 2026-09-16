@@ -1,0 +1,22 @@
+name: Send mission reminder
+
+on:
+  schedule:
+    # 20:00 BRT (UTC-3, no DST in Brazil since 2019) = 23:00 UTC
+    - cron: '0 23 * * *'
+  workflow_dispatch:
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node scripts/send-notification.mjs
+        env:
+          PUSH_SUBSCRIPTION: ${{ secrets.PUSH_SUBSCRIPTION }}
+          VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
