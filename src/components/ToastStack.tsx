@@ -13,15 +13,18 @@ export function ToastStack() {
   }, [toasts, dismissToast]);
 
   return (
-    <div className="fixed bottom-4 right-4 z-[90] flex flex-col gap-2 items-end">
+    <div
+      className="fixed left-4 right-4 z-[90] flex flex-col gap-2 items-center max-w-md mx-auto"
+      style={{ bottom: 'calc(env(safe-area-inset-bottom, 0px) + 76px)' }}
+    >
       <AnimatePresence>
         {toasts.map((t) => (
           <motion.div
             key={t.id}
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 40 }}
-            className={`panel rounded px-4 py-2 text-sm font-display ${
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 12 }}
+            className={`panel rounded px-4 py-2 text-sm font-display text-center w-full ${
               t.kind === 'penalty' ? 'text-red-300 border-red-500/40' : 'text-blue-200'
             }`}
           >

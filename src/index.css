@@ -13,13 +13,21 @@
 
 html {
   color-scheme: dark;
+  height: 100%;
+  overscroll-behavior-y: none;
 }
 
 body {
   background: radial-gradient(circle at 50% 0%, #0e1730 0%, #050810 55%, #020308 100%);
   color: #dce6f7;
   font-family: var(--font-body);
-  min-height: 100vh;
+  min-height: 100dvh;
+  overscroll-behavior-y: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  touch-action: manipulation;
 }
 
 h1,

@@ -1,17 +1,19 @@
 import { useEffect, useState } from 'react';
+import { History, ListChecks, UserRound } from 'lucide-react';
 import { useGameStore } from './store/useGameStore';
 import { StatusWindow } from './components/StatusWindow';
 import { QuestBoard } from './components/QuestBoard';
 import { LogFeed } from './components/LogFeed';
 import { LevelUpOverlay } from './components/LevelUpOverlay';
 import { ToastStack } from './components/ToastStack';
+import { InstallPrompt } from './components/InstallPrompt';
 
 type Tab = 'status' | 'missoes' | 'historico';
 
-const TABS: { id: Tab; label: string }[] = [
-  { id: 'status', label: 'Status' },
-  { id: 'missoes', label: 'Missões' },
-  { id: 'historico', label: 'Histórico' },
+const TABS: { id: Tab; label: string; icon: typeof UserRound }[] = [
+  { id: 'status', label: 'Status', icon: UserRound },
+  { id: 'missoes', label: 'Missões', icon: ListChecks },
+  { id: 'historico', label: 'Histórico', icon: History },
 ];
 
 function App() {
@@ -30,38 +32,45 @@ function App() {
   }, [checkDailyReset]);
 
   return (
-    <div className="min-h-screen px-4 py-8 md:py-12">
-      <div className="max-w-3xl mx-auto">
-        <header className="text-center mb-8">
-          <p className="text-xs tracking-[0.4em] text-blue-400/60 mb-1">O SISTEMA</p>
-          <h1 className="font-display text-3xl text-white glow-text">ARISE</h1>
-        </header>
+    <div className="min-h-[100dvh] flex flex-col">
+      <header className="text-center pt-[calc(env(safe-area-inset-top,0px)+20px)] pb-4 px-4">
+        <p className="text-[10px] tracking-[0.4em] text-blue-400/60 mb-1">O SISTEMA</p>
+        <h1 className="font-display text-2xl text-white glow-text">ARISE</h1>
+      </header>
 
-        <nav className="flex justify-center gap-1 mb-6">
-          {TABS.map((t) => (
-            <button
-              key={t.id}
-              onClick={() => setTab(t.id)}
-              className={`px-4 py-2 text-sm font-display tracking-wide rounded-t border-b-2 transition ${
-                tab === t.id
-                  ? 'text-white border-blue-400'
-                  : 'text-blue-300/40 border-transparent hover:text-blue-200/70'
-              }`}
-            >
-              {t.label}
-            </button>
-          ))}
-        </nav>
+      <main className="flex-1 overflow-y-auto px-4 pb-6 max-w-md w-full mx-auto">
+        {tab === 'status' && <StatusWindow />}
+        {tab === 'missoes' && <QuestBoard />}
+        {tab === 'historico' && <LogFeed />}
+      </main>
 
-        <main>
-          {tab === 'status' && <StatusWindow />}
-          {tab === 'missoes' && <QuestBoard />}
-          {tab === 'historico' && <LogFeed />}
-        </main>
-      </div>
+      <nav
+        className="sticky bottom-0 border-t border-blue-500/15 bg-[#050810]/95 backdrop-blur"
+        style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
+      >
+        <div className="max-w-md mx-auto flex">
+          {TABS.map((t) => {
+            const Icon = t.icon;
+            const active = tab === t.id;
+            return (
+              <button
+                key={t.id}
+                onClick={() => setTab(t.id)}
+                className="flex-1 flex flex-col items-center gap-1 py-2.5 transition"
+              >
+                <Icon size={20} className={active ? 'text-blue-300' : 'text-blue-300/35'} strokeWidth={active ? 2.4 : 2} />
+                <span className={`text-[11px] font-display tracking-wide ${active ? 'text-blue-200' : 'text-blue-300/35'}`}>
+                  {t.label}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </nav>
 
       <LevelUpOverlay />
       <ToastStack />
+      <InstallPrompt />
     </div>
   );
 }
